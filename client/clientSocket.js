@@ -24,6 +24,10 @@ function setUsername(username) {
 }
 
 function submitGuess(letter) {
+	if (/[^a-zA-Z]/.test(letter)) {
+		gameMessage.innerHTML = "You can only make a guess using letters."
+		return;
+	}
 	let guessFound = userGuesses.innerHTML.split(',').find((guess) => {
       return guess === letter;
     });
