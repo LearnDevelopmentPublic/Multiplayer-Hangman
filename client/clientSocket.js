@@ -10,12 +10,26 @@ let usernameInput = document.getElementById('usernameInput');
 let guessSubmit = document.getElementById('guess-submit');
 let usernameSubmit = document.getElementById('username-submit');
 
+const namePattern = /^[A-Za-z]+$/; // Regex that only accept letters without spaces
+const oneLetterPattern = /^(a|A)$/; // Regex that only accept one letter
+
 guessSubmit.addEventListener('click', function(){
-    submitGuess(guessInput.value);
+    if(guessInput.value === oneLetterPattern){  // Check if guessInput is a letter
+    	submitGuess(guessInput.value);
+    } else {					// Otherwise alert the user that input is invalid
+	alert("You should enter a valid one letter!");
+    };
+	
     guessInput.value = '';
 });
 
 usernameSubmit.addEventListener('click', function(){
+	
+    if(guessInput.value === namePattern){ // Check if name is a valid username
+    	submitGuess(usernameInput.value);
+    } else {				  // Otherwise alert the user that input is invalid
+	alert("You should enter a username using only letters!");
+    };
     setUsername(usernameInput.value);
 });
 
