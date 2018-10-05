@@ -36,7 +36,11 @@ export class Server {
         socket.username = username;
       });
 
-      socket.on('newGuess', function(letter){
+      socket.on('newGuess', function(submittedLetter){
+        // If they remove client-side validation and submit a non-letter, then we make the guess blank
+        // and count it against their score. This way, all non-letter submissions are treated as the
+        // same character.
+        const letter = submittedLetter.replace(/[^a-zA-Z]/g, '');
         let guess = game.newGuess(letter);
         socket.emit(guess, game.getState(socket.username));
         socket.broadcast.emit(guess, game.getState(socket.username));
