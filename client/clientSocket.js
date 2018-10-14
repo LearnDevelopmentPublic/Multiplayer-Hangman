@@ -5,9 +5,9 @@ var game = null;
 
 // We should move all of this ! We may need to pass a socket instance to the game if the reason this is here is 
 // down to the fact that data doesn't flow from clientGame to clientSocket ( i.e a simple example, to pass the letter guess to here )
-var onlinePlayers = document.querySelectorAll('*[data-online-players]')[0];
-var guessSubmit = document.querySelectorAll('*[data-guess-submit]')[0];
-var guessInput = document.querySelectorAll('[data-guess-input]')[0];
+var onlinePlayers = document.querySelector('*[data-online-players]');
+var guessSubmit = document.querySelector('*[data-guess-submit]');
+var guessInput = document.querySelector('[data-guess-input]');
 console.log(guessInput);
 guessSubmit.addEventListener('click', function(){
 	submitGuess(guessInput.value);
