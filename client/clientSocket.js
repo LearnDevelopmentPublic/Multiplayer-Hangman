@@ -3,7 +3,6 @@ var socket = io('http://localhost:5000');
 var clientGame = require('./clientGame.js').clientGame;
 var game = null;
 
-
 export function setUsername(username) {
 	socket.emit('setUsername', username);
 }
