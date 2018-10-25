@@ -24,6 +24,8 @@ body {
 
 #game-view-container {
   height: 75%;
+  display: flex;
+  flex-direction: row;
 }
 
 #bottom-panel {
@@ -35,8 +37,8 @@ body {
 }
 
 #sidebar-container {
-  float: right;
-  width: 40%;
+//   float: right;
+  width: 50%;
   text-align: right;
   margin-right: 25px;
 
