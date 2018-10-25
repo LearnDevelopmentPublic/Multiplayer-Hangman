@@ -1,8 +1,6 @@
 #hangman-container {
-  float: left;
-  height: 100%;
-  padding-left: 50px;
-  padding-top: 10px;
+  width: 50%;
+  margin-top: 20px;
 }
 
 @-webkit-keyframes swinging {
@@ -45,4 +43,13 @@
 #hangman-svg {
   max-width: 800px;
   height: 100%;
+
+  @media only screen and (max-width: 800px) {
+    height: auto;
+    margin-top: 20%;
+  }
+
+  @media only screen and (max-width: 600px) {
+    margin-top: 50%;
+  }
 }
