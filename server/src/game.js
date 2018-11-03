@@ -1,11 +1,8 @@
 export class Game {
   constructor() {
     this.words = ['melon', 'car', 'airplane', 'pig', 'piano'];
-    this.word = this.words[Math.floor(Math.random() * this.words.length)].toLowerCase();
-    this.blankWord = this.word
-      .replace(/\w/g, '_')
-      .split('')
-      .join(' ');
+    this.word = this.pickRandomWord(this.words);
+    this.blankWord = this.toBlankWord(this.word);
     this.guesses = [];
     this.correct = 0;
     this.incorrect = 0;
@@ -14,59 +11,56 @@ export class Game {
   }
 
   newGuess(letter) {
-    let prevBlank = this.blankWord;
-    let guessFound = this.guesses.find(guess => {
-      return guess === letter;
-    });
+    // Guess is false in the start
+    let guessedCorrectly = false;
 
-    if (guessFound === letter) {
-      return 'repeatGuess';
-    } else if (/[^\w\.\-]/.test(letter)) {
-      return 'invalidCharacter';
-    } else if (guessFound === undefined) {
+    // Checks if there are previous guesses
+    if (this.guesses.length > 0) {
+      let guessFound = this.guesses.findIndex(guess => {
+        return guess === letter;
+      });
+
+      if (guessFound !== -1) return 'repeatGuess';
+      if (/[^\w\.\-]/.test(letter)) return 'invalidCharacter';
+    } else {
       this.guesses.push(letter);
+
       let blankWordArray = this.blankWord.split(' ');
-      //Updates mystery/blank word based on guesses
-      for (let i = 0; i < this.word.split('').length; i++) {
-        const displayedLetter = this.word.split('')[i];
-        if (displayedLetter === letter) {
-          blankWordArray[i] = displayedLetter;
+      // Updates mystery/blank word based on guesses
+      for (let i = 0; i < this.word.length; i++) {
+        if (this.word.charAt(i) === letter) {
+          blankWordArray[i] = letter;
+          // Guess is correct
+          guessedCorrectly = true;
         }
       }
+
       this.blankWord = blankWordArray.join(' ');
 
-      if (prevBlank === this.blankWord) {
-        return this.incorrectGuess();
-        // this.incorrect++;
-        // console.log(this.blankWord);
-        // return 'incorrectGuess';
-      } else {
-        return this.correctGuess();
-        // this.correct++;
-        // console.log(this.blankWord);
-        // return 'correctGuess';
-      }
+      return (guessedCorrectly) ? this.incorrectGuess() : this.correctGuess();
     }
   }
 
   incorrectGuess() {
     this.incorrect++;
-    if (this.incorrect >= 6) {
-      this.status = 'inactive';
-      return 'gameOver';
-    } else {
+
+    if (this.blankWord.split(' ').join('') !== this.word) {
       return 'incorrectGuess';
     }
+
+    this.status = 'inactive';
+    return 'victory';
   }
 
   correctGuess() {
     this.correct++;
-    if (this.blankWord.split(' ').join('') === this.word) {
-      this.status = 'inactive';
-      return 'victory';
-    } else {
+
+    if (this.blankWord.split(' ').join('') !== this.word) {
       return 'correctGuess';
     }
+
+    this.status = 'inactive';
+    return 'victory';
   }
 
   getState(guesser) {
@@ -77,20 +71,24 @@ export class Game {
       incorrect: this.incorrect,
       status: this.status
     };
-    if (guesser) {
-      gameState = {
-        blankword: this.blankWord,
-        guesses: this.guesses,
-        correct: this.correct,
-        incorrect: this.incorrect,
-        status: this.status,
-        guesser: guesser
-      };
-    }
+
+    if (guesser) gameState.guesser = guesser;
+
     return gameState;
   }
 
+  pickRandomWord(words) {
+    return words[Math.floor(Math.random() * words.length)].toLowerCase();
+  }
+
+  toBlankWord(word) {
+    return word
+      .replace(/\w/g, '_')
+      .split('')
+      .join(' ');
+  }
+
   announceGame() {
-    console.log('New game started: ' + this.word + ' ' + this.blankWord);
+    console.log(`New game started: ${this.word} --> ${this.blankWord}`);
   }
 }
